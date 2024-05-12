@@ -4,7 +4,7 @@ description = "Jinja2 template loader for embedded Python runtimes"
 authors = [{ name = "GPla", email = "36087062+GPla@users.noreply.github.com" }]
 dependencies = ["jinja2>=3,<4"]
 readme = "README.rst"
-requires-python = ">= 3.8"
+requires-python = ">= 3.10"
 dynamic = ["version"]
 
 [project.optional-dependencies]
