@@ -1,5 +1,9 @@
 name: Run tests in embbedded python
 
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
+
 on:
   pull_request:
     branches: ["main"]
@@ -27,6 +31,10 @@ jobs:
           # Double-check latest version supported by PyOxidizer:
           # https://github.com/indygreg/PyOxidizer/releases/
           python-version: "3.10"
+
+      - name: Install pyoxidizer
+        run: |
+          python -m pip install pyoxidizer
 
       - name: run tests
         shell: bash
