@@ -33,50 +33,53 @@ The `EmbeddedPackageLoader` from this package fixes this problem and required mi
 Under the hood, we utilize the `Loader` and `ResourceReader` implementation of the package provided through `importlib <https://docs.python.org/3/library/importlib.html>`_.
 For example, `PyOxidizer <https://github.com/indygreg/PyOxidizer>`_ implements this functionality with the `oxidized-importer <https://pypi.org/project/oxidized-importer/>`_ package.
 
-## How to use
+How to use
+^^^^^^^^^^
 
 Two changes necessary.
 First, change `PackageLoader` to `EmbeddedPackageLoader`:
 
-```python
-from jinja2 import Environment, PackageLoader
-from jinja2_embedded import EmbeddedPackageLoader
+.. code::
 
-# before
-env = Environment(
-    loader=PackageLoader('my_package', 'templates'),
-)
+    from jinja2 import Environment, PackageLoader
+    from jinja2_embedded import EmbeddedPackageLoader
 
-# after
-env = Environment(
-    loader=EmbeddedPackageLoader('my_package.templates'),
-)
+    # before
+    env = Environment(
+        loader=PackageLoader('my_package', 'templates'),
+    )
 
-# with FastAPI
-from fastapi.templating import Jinja2Templates
-templates = Jinja2Templates(env=env)
-```
+    # after
+    env = Environment(
+        loader=EmbeddedPackageLoader('my_package.templates'),
+    )
+
+    # with FastAPI
+    from fastapi.templating import Jinja2Templates
+    templates = Jinja2Templates(env=env)
 
 Second, declare the template directory as a module by adding a `__init__.py` file:
 
-```bash
-my_package
-├── __init__.py
-├── main.py
-└── templates
-    ├── __init__.py # required
-    ├── bar
-    │   ├── __init__.py # not required
-    │   └── test.html.jinja2
-    ├── foo
-    │   └── test.html
-    └── test.html
-```
+.. code::
+
+    my_package
+    ├── __init__.py
+    ├── main.py
+    └── templates
+        ├── __init__.py # required
+        ├── bar
+        │   ├── __init__.py # not required
+        │   └── test.html.jinja2
+        ├── foo
+        │   └── test.html
+        └── test.html
+
 
 The subdirectories inside the template directory can be declared as modules (here `my_package.templates.bar`), but this is not required.
 The `EmbeddedPackageLoader` works with either or a mixture of the two configurations.
 
-## How it works
+How it works
+^^^^^^^^^^^^
 
 The `EmbeddedPackageLoader` will first try to locate the template with the `ResourceReader` from `my_package.templates`.
 In our example from above, the `ResourceReader` is able to see:
@@ -112,7 +115,8 @@ Since, `bar` is declared as module, we need to use the respective `ResourceReade
 
 The `EmbeddedPackageLoader` will first try to find the resource in the `ResourceReader` of the main package and then fallback to the `ResourceReader` of the submodule (if it is declared as such).
 
-## Development
+Development
+^^^^^^^^^^^
 
 Install `rye <https://github.com/astral-sh/rye>`_, then run `rye sync`. This creates a `venv <https://docs.python.org/3/library/venv.html>`_ with all necessary dependencies.
 Run `pytest` to run all tests.

@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Jinja2 Loader for embedded Python runtimes"
 authors = [{ name = "GPla", email = "36087062+GPla@users.noreply.github.com" }]
 dependencies = ["jinja2>=3,<4"]
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">= 3.8"
 
 [project.optional-dependencies]
