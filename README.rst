@@ -4,7 +4,7 @@ jinja2-embedded
 |pypi| |python| |pre-commit| |mypy| |codecov|
 
 .. |pypi| image:: https://badge.fury.io/py/jinja2-embedded.svg
-    :target: https://pypi.org/project/faster-etapr/
+    :target: https://pypi.org/project/jinja2-embedded/
     :alt: Latest Version
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/jinja2-embedded
