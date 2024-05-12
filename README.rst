@@ -1,4 +1,4 @@
-embedded-jinja2
+jinja2-embedded
 ===============
 
 |pypi| |python| |pre-commit| |mypy| |codecov|
@@ -27,17 +27,17 @@ Template loader for embedded python runtimes, e.g., `PyOxidizer <https://github.
 
 The main problem with the current `PackageLoader <https://jinja.palletsprojects.com/en/3.0.x/api/#jinja2.PackageLoader>`_ is that it can only load templates from packages which are installed and materialized as directories.
 However, when using a bundler from above, the resources, i.e., templates, are embedded into the executable.
-Thus, the `PackageLoader` will throw the following exception: `The package was not installed in a way that PackageLoader understands`.
+Thus, the :code:`PackageLoader` will throw the following exception: :code:`The package was not installed in a way that PackageLoader understands`.
 
-The `EmbeddedPackageLoader` from this package fixes this problem and required minimal changes.
-Under the hood, we utilize the `Loader` and `ResourceReader` implementation of the package provided through `importlib <https://docs.python.org/3/library/importlib.html>`_.
-For example, `PyOxidizer <https://github.com/indygreg/PyOxidizer>`_ implements this functionality with the `oxidized-importer <https://pypi.org/project/oxidized-importer/>`_ package.
+The :code:`EmbeddedPackageLoader` from this package fixes this problem and required minimal changes.
+Under the hood, we utilize the :code:`Loader` and :code:`ResourceReader` implementation of the package provided through `importlib <https://docs.python.org/3/library/importlib.html>`_.
+Thereby, the :code:`EmbeddedPackageLoader` will work when the package is normally installed as directory and in an embedded environment.
 
 How to use
 ^^^^^^^^^^
 
-Two changes necessary.
-First, change `PackageLoader` to `EmbeddedPackageLoader`:
+Two changes are necessary.
+First, change :code:`PackageLoader` to :code:`EmbeddedPackageLoader`:
 
 .. code::
 
@@ -58,7 +58,7 @@ First, change `PackageLoader` to `EmbeddedPackageLoader`:
     from fastapi.templating import Jinja2Templates
     templates = Jinja2Templates(env=env)
 
-Second, declare the template directory as a module by adding a `__init__.py` file:
+Second, declare the `templates` directory as a module by adding a :code:`__init__.py` file:
 
 .. code::
 
@@ -75,14 +75,14 @@ Second, declare the template directory as a module by adding a `__init__.py` fil
         └── test.html
 
 
-The subdirectories inside the template directory can be declared as modules (here `my_package.templates.bar`), but this is not required.
-The `EmbeddedPackageLoader` works with either or a mixture of the two configurations.
+The subdirectories inside the `templates` directory can be declared as modules (here :code:`my_package.templates.bar`), but this is not required.
+The :code:`EmbeddedPackageLoader` works with either or mixed configuration.
 
 How it works
 ^^^^^^^^^^^^
 
-The `EmbeddedPackageLoader` will first try to locate the template with the `ResourceReader` from `my_package.templates`.
-In our example from above, the `ResourceReader` is able to see:
+The :code:`EmbeddedPackageLoader` will first try to locate the template with the :code:`ResourceReader` from :code:`my_package.templates`.
+From our example above, the :code:`ResourceReader` is able to see:
 
 .. code::
 
@@ -95,7 +95,7 @@ In our example from above, the `ResourceReader` is able to see:
     ['foo/test.html', 'test.html']
 
 
-So we can use the provided `resource_reader` to read either of those files:
+So we can use the provided :code:`resource_reader` to read either of those files:
 
 .. code::
 
@@ -104,7 +104,7 @@ So we can use the provided `resource_reader` to read either of those files:
     >>> print(content.decode('utf-8'))
     FOO
 
-Since, `bar` is declared as module, we need to use the respective `ResourceReader`:
+Since, :code:`bar` is declared as module (directory contains a :code:`__init__.py` file), we need to use the :code:`ResourceReader` of the respective module:
 
 .. code::
 
@@ -113,16 +113,16 @@ Since, `bar` is declared as module, we need to use the respective `ResourceReade
     >>> print(list(contents))
     ['test.html.jinja2']
 
-The `EmbeddedPackageLoader` will first try to find the resource in the `ResourceReader` of the main package and then fallback to the `ResourceReader` of the submodule (if it is declared as such).
+The :code:`EmbeddedPackageLoader` will first try to find the resource in the :code:`ResourceReader` of the main package and then fallback to the :code:`ResourceReader` of the submodule (if it is declared as such).
 
 Development
 ^^^^^^^^^^^
 
-Install `rye <https://github.com/astral-sh/rye>`_, then run `rye sync`. This creates a `venv <https://docs.python.org/3/library/venv.html>`_ with all necessary dependencies.
-Run `pytest` to run all tests.
+Install `rye <https://github.com/astral-sh/rye>`_, then run :code:`rye sync`. This creates a `venv <https://docs.python.org/3/library/venv.html>`_ with all necessary dependencies.
+Run :code:`pytest` to run all tests.
 
-To run the tests in a embedded Python version created with `PyOxidizer <https://github.com/indygreg/PyOxidizer>`_, run `pyoxidizer run` in the root directory.
+To run the tests in a embedded Python version created with `PyOxidizer <https://github.com/indygreg/PyOxidizer>`_, run :code:`pyoxidizer run` in the root directory.
 After the executable has been build, the tests will run automatically.
 
 This repository used `ruff <https://github.com/astral-sh/ruff>`_ to enforce style standards. The formatting is automatically done for you via `pre-commit <https://pre-commit.com/>`_.
-Install pre-commit with `pre-commit install`.
+Install pre-commit with :code:`pre-commit install`.
