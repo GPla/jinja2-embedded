@@ -5,7 +5,31 @@ authors = [{ name = "GPla", email = "36087062+GPla@users.noreply.github.com" }]
 dependencies = ["jinja2>=3,<4"]
 readme = "README.rst"
 requires-python = ">= 3.10"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Environment :: Web Environment",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
+]
+keywords = [
+    "jinja2",
+    "embedded",
+    "bundler",
+    "pyoxidizer",
+    "python",
+    "executable",
+]
+license = "MIT"
 dynamic = ["version"]
+
+[project.urls]
+Source = "https://github.com/GPla/jinja2-embedded"
 
 [project.optional-dependencies]
 tests = ["pytest>=8.2.0", "pytest-cov>=5.0.0", "pyoxidizer>=0.24.0"]
