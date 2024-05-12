@@ -47,11 +47,15 @@ First, change :code:`PackageLoader` to :code:`EmbeddedPackageLoader`:
     # before
     env = Environment(
         loader=PackageLoader('my_package', 'templates'),
+        autoescape=True,
+        ...
     )
 
     # after
     env = Environment(
         loader=EmbeddedPackageLoader('my_package.templates'),
+        autoescape=True, # default False, but FastAPI uses True as default
+        extensions=[],
     )
 
     # with FastAPI
