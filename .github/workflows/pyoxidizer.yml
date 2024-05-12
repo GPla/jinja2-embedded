@@ -18,9 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         runs-on:
-          - ubuntu-20.04
           - windows-latest
-          - macos-latest
+          # - ubuntu-20.04
+          # - macos-latest
 
     steps:
       - uses: actions/checkout@v4
