@@ -4,7 +4,7 @@ __all__ = [
     'EmbeddedPackageLoader',
 ]
 
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 __title__ = 'jinja2-embedded'
 __description__ = 'Jinja2 template loader for embedded Python runtimes'
