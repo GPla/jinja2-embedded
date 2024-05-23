@@ -12,6 +12,8 @@ def test_embedded_package_loader(embedded_package_loader):
     pytest.raises(TemplateNotFound, env.get_template, 'missing.html')
     pytest.raises(TemplateNotFound, env.get_template, 'foo/missing.html')
     pytest.raises(TemplateNotFound, env.get_template, 'bar/missing.html')
+    pytest.raises(TemplateNotFound, env.get_template, 'baz/a/missing.html')
+    pytest.raises(TemplateNotFound, env.get_template, 'oof/bar/missing.html')
 
 
 def test_embedded_package_loader_raised():
@@ -23,6 +25,8 @@ def test_embedded_package_loader_raised():
     [
         ('foo/test.html', 'FOO'),
         ('foo/bar/x.html', 'YYY'),
+        ('foo/bar/baz/a.html', 'AAA'),
+        ('baz/a/b.html', 'BBB'),
         ('bar/test.html.jinja2', 'BAR'),
         ('test.html', 'BAR'),
     ],
