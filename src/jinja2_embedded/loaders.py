@@ -101,24 +101,36 @@ class EmbeddedPackageLoader(BaseLoader):
                 raise TemplateNotFound(template) from e
 
             try:
-                resource_reader = self._loader.get_resource_reader(  # type: ignore[attr-defined]
-                    '.'.join([self.package, *parts[:-1]])
-                )
-            except ImportError as e:
+                source = self._recursive_resolve(parts[:-1], parts[-1])
+            except FileNotFoundError as e:
                 raise TemplateNotFound(template) from e
 
-            if resource_reader is None:
-                raise TemplateNotFound(
-                    template,
-                    'Could not create ResourceReader.',
+        return source.decode(self.encoding), path, lambda: True
+
+    def _recursive_resolve(self, parts: list[str], template: str):
+        for i in range(1, len(parts) + 1):
+            module = '.'.join([self.package, *parts[:i]])
+            name = '/'.join([*parts[i:], template])
+            try:
+                resource_reader = self._loader.get_resource_reader(  # type: ignore[attr-defined]
+                    module
                 )
+            except ImportError:
+                # dir is not a module (missing __init__.py)
+                continue
+
+            if resource_reader is None:
+                # dir is not a module (missing __init__.py)
+                continue
 
             try:
                 # check if we can find the file in a submodule
                 # submodule = directory with __init__.py
-                with resource_reader.open_resource(parts[-1]) as resource:
-                    source = resource.read()
-            except FileNotFoundError as ex:
-                raise TemplateNotFound(template) from ex
+                with resource_reader.open_resource(name) as resource:
+                    return resource.read()
+            except FileNotFoundError:
+                continue
 
-        return source.decode(self.encoding), path, lambda: True
+        raise FileNotFoundError(
+            f'Could not find template {"/".join(parts)}/{template}.'
+        )
