@@ -19,18 +19,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install .[tests]
-          python -m pip install ./tests/test_module
+      - name: Install the project
+        run: uv sync --locked --all-extras
       - name: Test with pytest
         run: |
-          pytest --cov=jinja2_embedded
+          uv run pytest --cov=jinja2_embedded
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
