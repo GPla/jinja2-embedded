@@ -122,7 +122,7 @@ The :code:`EmbeddedPackageLoader` will first try to find the resource in the :co
 Development
 ^^^^^^^^^^^
 
-Install `rye <https://github.com/astral-sh/rye>`_, then run :code:`rye sync`. This creates a `venv <https://docs.python.org/3/library/venv.html>`_ with all necessary dependencies.
+Install `uv <https://github.com/astral-sh/uv>`_, then run :code:`uv sync --all-extras`. This creates a `venv <https://docs.python.org/3/library/venv.html>`_ with all necessary dependencies.
 Run :code:`pytest` to run all tests.
 
 To run the tests in a embedded Python version created with `PyOxidizer <https://github.com/indygreg/PyOxidizer>`_, run :code:`pyoxidizer run` in the root directory.

@@ -1,6 +1,6 @@
 import importlib.util
 from importlib import import_module
-from importlib.abc import ResourceReader
+from importlib.resources import ResourceReader
 from typing import Callable
 from typing import Tuple
 
